@@ -1,0 +1,53 @@
+<html lang="ko" layout:decorate="~{article/layout}">
+<div layout:fragment="content">
+    <form method="post" onsubmit="checkSubmit(this); return false;" th:action="@{|/article/modify/${article.id}|}">
+        <div>
+            <label for="title">제목</label>
+            <input name="title" th:value="${article.title}" type="text">
+            <!--    <div th:text="${article.title}"></div>-->
+        </div>
+        <hr>
+        <div>
+            <label for="body">내용</label>
+            <input name="body" th:value="${article.body}" type="text">
+            <!--    <div th:text="${article.body}"></div>-->
+        </div>
+        <input type="submit" value="수정"/>
+    </form>
+    <form method="post" th:action="@{|/article/delete/${article.id}|}">
+        <input type="submit" value="삭제"/>
+    </form>
+    <br>
+    <hr>
+    <form action="/comment/write" method="post">
+        <label for="comm">댓글</label>
+        <input name="comm" type="text">
+        <input name="articleId" th:value="${article.id}" type="hidden">
+        <input type="submit" value="등록"/>
+    </form>
+    <div th:if="${#lists.isEmpty(commentList)}">댓글이 없습니다.</div>
+    <div>
+        <ul>
+            <li th:each="comment : ${commentList}" th:text="${comment.comm}"></li>
+        </ul>
+    </div>
+    <script>
+        function checkSubmit(form) {
+            console.log('test');
+            if(form.title.value.trim().length == 0) {
+                alert('제목을 입력해주세요.');
+                titleInput.focus();
+                return;
+            }
+
+            if(form.body.value.trim().length == 0) {
+                alert('내용을 입력해주세요.');
+                bodyInput.focus();
+                return;
+            }
+
+            form.submit();
+        }
+    </script>
+</div>
+</html>
