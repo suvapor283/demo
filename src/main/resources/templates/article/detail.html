@@ -1,4 +1,4 @@
-<html lang="ko" layout:decorate="~{article/layout}">
+<html lang="ko" layout:decorate="~{global/layout}">
 <div layout:fragment="content">
     <form method="post" onsubmit="checkSubmit(this); return false;" th:action="@{|/article/modify/${article.id}|}">
         <div>
@@ -25,7 +25,6 @@
         <input name="articleId" th:value="${article.id}" type="hidden">
         <input type="submit" value="등록"/>
     </form>
-    <div th:if="${#lists.isEmpty(commentList)}">댓글이 없습니다.</div>
     <div>
         <ul>
             <li th:each="comment : ${commentList}" th:text="${comment.comm}"></li>
@@ -34,13 +33,13 @@
     <script>
         function checkSubmit(form) {
             console.log('test');
-            if(form.title.value.trim().length == 0) {
+            if (form.title.value.trim().length == 0) {
                 alert('제목을 입력해주세요.');
                 titleInput.focus();
                 return;
             }
 
-            if(form.body.value.trim().length == 0) {
+            if (form.body.value.trim().length == 0) {
                 alert('내용을 입력해주세요.');
                 bodyInput.focus();
                 return;

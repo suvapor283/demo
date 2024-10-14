@@ -1,7 +1,6 @@
-package com.example.basic.comment.dao;
+package com.example.basic.domain.comment.dao;
 
-import com.example.basic.article.entity.Article;
-import com.example.basic.comment.entity.Comment;
+import com.example.basic.domain.comment.entity.Comment;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

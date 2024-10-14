@@ -1,4 +1,4 @@
-package com.example.basic.comment.entity;
+package com.example.basic.domain.comment.entity;
 
 import lombok.*;
 

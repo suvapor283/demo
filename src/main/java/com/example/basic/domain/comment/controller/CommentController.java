@@ -1,10 +1,7 @@
-package com.example.basic.comment.controller;
+package com.example.basic.domain.comment.controller;
 
-import com.example.basic.article.entity.Article;
-import com.example.basic.comment.entity.Comment;
-import com.example.basic.comment.service.CommentService;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
+import com.example.basic.domain.comment.entity.Comment;
+import com.example.basic.domain.comment.service.CommentService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

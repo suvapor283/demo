@@ -1,8 +1,7 @@
-package com.example.basic.comment.service;
+package com.example.basic.domain.comment.service;
 
-import com.example.basic.article.entity.Article;
-import com.example.basic.comment.dao.CommentDao;
-import com.example.basic.comment.entity.Comment;
+import com.example.basic.domain.comment.dao.CommentDao;
+import com.example.basic.domain.comment.entity.Comment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
