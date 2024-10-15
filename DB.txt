@@ -1,0 +1,55 @@
+DROP DATABASE IF EXISTS 2024_09_SBAM;
+CREATE DATABASE 2024_09_SBAM;
+USE 2024_09_SBAM;
+
+CREATE TABLE article2(
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
+    -- , regDate DATETIME NOT NULL
+    -- , updateDate DATETIME NOT NULL
+    -- , memberId INT UNSIGNED NOT NULL
+    , title VARCHAR(100) NOT NULL
+    , `body` TEXT NOT NULL
+    -- , vCnt INT UNSIGNED NOT NULL DEFAULT 0
+);
+
+CREATE TABLE `member`(
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
+    -- , regDate DATETIME NOT NULL
+    -- , updateDate DATETIME NOT NULL
+    , username VARCHAR(20) NOT NULL UNIQUE
+    , `password` VARCHAR(20) NOT NULL
+    -- , `name` VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE `comment`(
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
+    , articleId INT UNSIGNED NOT NULL
+    , comm VARCHAR(200) NOT NULL
+);
+
+SELECT * FROM article2;
+SELECT * FROM `member`;
+SELECT * FROM `comment`;
+
+-- article write
+INSERT INTO article
+    SET title = 'title'
+        , `body` = 'body';
+
+-- article list
+SELECT * FROM article
+    ORDER BY id DESC;
+
+-- article detail
+SELECT * FROM article
+    WHERE id = 1;
+
+-- article delete
+DELETE FROM article
+    WHERE id = 1;
+
+-- article modify
+UPDATE FROM article
+    SET title = 'title'
+        , `body` = 'body'
+    WHERE id = 1;

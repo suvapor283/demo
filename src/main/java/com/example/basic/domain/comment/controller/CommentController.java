@@ -9,9 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,8 +39,8 @@ public class CommentController {
         return "redirect:/article/detail/%d".formatted(writeForm.articleId); // redirect 뒤에 적는 것은 url을 적는 것. 템플릿 이름 아님. 주소창을 해당 url로 바꾸라는 의미
     }
 
-    @RequestMapping("/comment/list")
-    public String list(long articleId, Model model) {
+    @RequestMapping("/comment/list/{id}")
+    public String list(@PathVariable("id") long articleId, Model model) {
         List<Comment> commentList = commentService.getByArticleId(articleId);
 
         model.addAttribute("commentList", commentList);

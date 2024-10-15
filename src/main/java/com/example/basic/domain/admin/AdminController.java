@@ -3,6 +3,7 @@ package com.example.basic.domain.admin;
 import com.example.basic.global.ReqResHandler;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,17 +16,19 @@ public class AdminController {
     private final ReqResHandler reqResHandler;
 
     @GetMapping("/admin/main")
-    public String manager(HttpServletRequest request, Model model) {
-        Cookie targetCookie = reqResHandler.getCookieByName(request, "loginUser");
+    public String manager(HttpSession session) {
 
-        if (targetCookie == null) {
+        String username = (String)session.getAttribute("loginUser");
+
+        if(username == null) {
             throw new RuntimeException("관리자 계정으로 로그인 해야만 사용 가능합니다.");
         }
 
-        Cookie role = reqResHandler.getCookieByName(request, "role");
+        String role = (String)session.getAttribute("role");
 
-        model.addAttribute("role", role.getValue());
-        model.addAttribute("loginedUser", targetCookie.getValue());
+        if(!role.equals("admin")) {
+            throw new RuntimeException("관리자 권한만 접근 가능합니다.");
+        }
 
         return "admin/main";
     }

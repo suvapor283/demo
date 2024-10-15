@@ -25,11 +25,12 @@
         <input name="articleId" th:value="${article.id}" type="hidden">
         <input type="submit" value="등록"/>
     </form>
-    <div>
+    <form th:action="@{|/comment/list/${article.id}|}">
         <ul>
-            <li th:each="comment : ${commentList}" th:text="${comment.comm}"></li>
+            <li th:each="comment : ${commentList}" th:text="${comment.comm}">
+            </li>
         </ul>
-    </div>
+    </form>
     <script>
         function checkSubmit(form) {
             console.log('test');

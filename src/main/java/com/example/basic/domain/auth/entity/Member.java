@@ -1,4 +1,4 @@
-package com.example.basic.domain.member;
+package com.example.basic.domain.auth.entity;
 
 import lombok.*;
 
@@ -11,4 +11,5 @@ public class Member {
     private Long id;
     private String username;
     private String password;
+    private String role;
 }

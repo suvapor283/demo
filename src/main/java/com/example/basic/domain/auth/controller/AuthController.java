@@ -1,9 +1,12 @@
-package com.example.basic.domain.member;
+package com.example.basic.domain.auth.controller;
 
+import com.example.basic.domain.auth.entity.Member;
+import com.example.basic.domain.auth.service.MemberService;
 import com.example.basic.global.ReqResHandler;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -15,7 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @RequiredArgsConstructor
-public class LoginController {
+public class AuthController {
 
     private final MemberService memberService;
     private final ReqResHandler reqResHandler;
@@ -35,36 +38,29 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@Valid LoginForm loginForm, HttpServletResponse response) {
+    public String login(@Valid LoginForm loginForm, HttpServletResponse response, HttpSession session) {
 
         Member member = memberService.loginCheck(loginForm.username);
 
-        String dbrole = "admin"; // normal, admin
+        Member targetMember = null;
 
-        if (member == null || !member.getPassword().equals(loginForm.password)) {
+        if (member != null && member.getPassword().equals(loginForm.password)) {
+            targetMember = member;
+        }
+
+        if (targetMember == null) {
             return "login-fail";
         }
 
-        Cookie cookie = new Cookie("loginUser", loginForm.username);
-        Cookie role = new Cookie("role", dbrole);
-
-        cookie.setMaxAge(60 * 60);
-        cookie.setPath("/");
-
-        response.addCookie(cookie);
-        response.addCookie(role);
+        session.setAttribute("loginUser", loginForm.username);
+        session.setAttribute("role", targetMember.getRole());
 
         return "redirect:/article/list";
     }
 
     @GetMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
-        Cookie targetCookie = reqResHandler.getCookieByName(request, "loginUser");
-
-        if (targetCookie != null) {
-            targetCookie.setMaxAge(0);
-            response.addCookie(targetCookie);
-        }
+    public String logout(HttpSession session) {
+        session.invalidate();
 
         return "redirect:/article/list";
     }
@@ -79,12 +75,14 @@ public class LoginController {
     public static class Joinform {
         @NotBlank
         private String username;
+        @NotBlank
         private String password;
+        private String role;
     }
 
     @PostMapping("/join")
     public String join(Joinform joinform) {
-        memberService.join(joinform.username, joinform.password);
+        memberService.join(joinform.username, joinform.password, joinform.role);
 
         return "redirect:/article/list";
     }

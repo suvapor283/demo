@@ -1,5 +1,6 @@
-package com.example.basic.domain.member;
+package com.example.basic.domain.auth.dao;
 
+import com.example.basic.domain.auth.entity.Member;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

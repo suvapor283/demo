@@ -1,11 +1,9 @@
-package com.example.basic.domain.member;
+package com.example.basic.domain.auth.service;
 
-import com.example.basic.domain.article.dao.ArticleDao;
-import com.example.basic.domain.article.entity.Article;
+import com.example.basic.domain.auth.dao.MemberDao;
+import com.example.basic.domain.auth.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -13,11 +11,12 @@ public class MemberService {
 
     private final MemberDao memberDao;
 
-    public void join(String username, String password) {
+    public void join(String username, String password, String role) {
         // 코드 정리 단축키 -> 컨트롤 + 알트 + L
         Member member = Member.builder()
                 .username(username)
                 .password(password)
+                .role(role)
                 .build();
 
         memberDao.save(member);
