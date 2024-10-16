@@ -13,13 +13,27 @@ CREATE TABLE article2(
 );
 
 CREATE TABLE `member`(
-    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
+    -- id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
     -- , regDate DATETIME NOT NULL
     -- , updateDate DATETIME NOT NULL
-    , username VARCHAR(20) NOT NULL UNIQUE
-    , `password` VARCHAR(20) NOT NULL
+    username VARCHAR(30) NOT NULL PRIMARY KEY
+    , `password` TEXT NOT NULL
     -- , `name` VARCHAR(20) NOT NULL
+    , `role` VARCHAR(30) NOT NULL
 );
+
+DROP TABLE `member`
+
+INSERT INTO `member`
+    SET username = '111'
+        , `password` = '111'
+        , `role` = 'admin'
+
+
+INSERT INTO `member`
+    SET username = '222'
+        , `password` = '222'
+        , `role` = 'normal'
 
 CREATE TABLE `comment`(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT

@@ -50,14 +50,7 @@ public class ArticleController {
     }
 
     @GetMapping("/article/write")
-    public String articleWrite(HttpServletRequest request, Model model) {
-        Cookie targetCookie = reqResHandler.getCookieByName(request, "loginUser");
-
-        if (targetCookie != null) {
-            model.addAttribute("loginedUser", targetCookie.getValue());
-            Cookie role = reqResHandler.getCookieByName(request, "role");
-            model.addAttribute("role", role.getValue());
-        }
+    public String articleWrite() {
 
         return "article/write";
     }
