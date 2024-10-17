@@ -21,6 +21,7 @@ public class CommentController {
 
     @GetMapping("/comment/write")
     public String commentWrite() {
+
         return "comment/write";
     }
 
@@ -35,16 +36,16 @@ public class CommentController {
     @PostMapping("/comment/write")
     public String write(@Valid WriteForm writeForm) {
 
-        commentService.write(writeForm.articleId, writeForm.comm);
-        return "redirect:/article/detail/%d".formatted(writeForm.articleId); // redirect 뒤에 적는 것은 url을 적는 것. 템플릿 이름 아님. 주소창을 해당 url로 바꾸라는 의미
+        commentService.write(writeForm.comm);
+        return "redirect:/article/detail/%d".formatted(writeForm.articleId);
     }
 
-    @RequestMapping("/comment/list/{id}")
-    public String list(@PathVariable("id") long articleId, Model model) {
-        List<Comment> commentList = commentService.getByArticleId(articleId);
-
-        model.addAttribute("commentList", commentList);
-
-        return "article/detail";
-    }
+//    @RequestMapping("/comment/list/{id}")
+//    public String list(@PathVariable("id") long articleId, Model model) {
+//        List<Comment> commentList = commentService.getByArticleId(articleId);
+//
+//        model.addAttribute("commentList", commentList);
+//
+//        return "article/detail";
+//    }
 }

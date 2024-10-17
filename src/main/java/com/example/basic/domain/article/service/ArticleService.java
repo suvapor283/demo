@@ -1,27 +1,30 @@
 package com.example.basic.domain.article.service;
 
 import com.example.basic.domain.article.entity.Article;
-import com.example.basic.domain.article.dao.ArticleDao;
+import com.example.basic.domain.article.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ArticleService {
 
-    private final ArticleDao articleDao;
+    private final ArticleRepository articleRepository;
 
     // 1. 기능 구현
     // 2. 유지 보수를 생각한 코드
     public Article getById(long id) {
-        Article article = articleDao.findById(id); // 데이터 처리(비지니스 로직)
-        return article;
+        Optional<Article> articleOpt = articleRepository.findById(id);
+
+        return articleOpt.get();
     }
 
     public List<Article> getAll() {
-        return articleDao.findAll();
+
+        return articleRepository.findAll();
     }
 
     public void write(String title, String body) {
@@ -31,21 +34,21 @@ public class ArticleService {
                 .body(body)
                 .build();
 
-        articleDao.save(article);
+        articleRepository.save(article);
     }
 
     public void deleteById(long id) {
-        articleDao.deleteById(id);
+
+        articleRepository.deleteById(id);
     }
 
     public void update(long id, String title, String body) {
-        // 빌더 방식
-        Article article = Article.builder()
-                .id(id)
-                .title(title)
-                .body(body)
-                .build();
+        Optional<Article> articleOpt = articleRepository.findById(id);
+        Article article = articleOpt.get();
 
-        articleDao.update(article);
+        article.setTitle(title);
+        article.setBody(body);
+
+        articleRepository.save(article);
     }
 }

@@ -1,5 +1,7 @@
 package com.example.basic.domain.comment.entity;
 
+import com.example.basic.domain.article.entity.Article;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Setter
@@ -7,8 +9,16 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Entity
 public class Comment {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long articleId;
-    private String comm;
+
+    @Column(nullable = false)
+    private String content;
+
+    @ManyToOne()
+    private Article article;
 }
