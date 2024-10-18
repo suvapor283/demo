@@ -1,5 +1,6 @@
 package com.example.basic.domain.comment.service;
 
+import com.example.basic.domain.article.entity.Article;
 import com.example.basic.domain.comment.entity.Comment;
 import com.example.basic.domain.comment.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,11 +14,11 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
 
-    public void write(String content) {
+    public void write(String content, long articleId) {
         // 코드 정리 단축키 -> 컨트롤 + 알트 + L
-        Comment comment = Comment.builder()
-                .content(content)
-                .build();
+        Comment comment = new Comment();
+        comment.setContent(content);
+        comment.setArticleId(articleId);
 
         commentRepository.save(comment);
     }

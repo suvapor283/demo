@@ -1,9 +1,12 @@
 package com.example.basic.domain.auth.entity;
 
+import com.example.basic.domain.article.entity.Article;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+
+import java.util.List;
 
 @Setter
 @Getter
@@ -23,6 +26,13 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, columnDefinition = "varchar(255) default 'normal'")
+    @Column(nullable = false)
     private String role;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<Article> article;
+
+    public void setRole(String role) {
+        this.role = (role == null || role.isEmpty()) ? "normal" : role;
+    }
 }

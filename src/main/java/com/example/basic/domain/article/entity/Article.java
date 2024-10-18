@@ -1,5 +1,6 @@
 package com.example.basic.domain.article.entity;
 
+import com.example.basic.domain.auth.entity.Member;
 import com.example.basic.domain.comment.entity.Comment;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,6 +24,9 @@ public class Article {
 
     @Column(nullable = false)
     private String body;
+
+    @ManyToOne
+    private Member member;
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE)
     private List<Comment> commentList;

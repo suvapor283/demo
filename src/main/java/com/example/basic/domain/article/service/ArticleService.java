@@ -2,6 +2,7 @@ package com.example.basic.domain.article.service;
 
 import com.example.basic.domain.article.entity.Article;
 import com.example.basic.domain.article.repository.ArticleRepository;
+import com.example.basic.domain.auth.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +15,12 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
-    // 1. 기능 구현
-    // 2. 유지 보수를 생각한 코드
     public Article getById(long id) {
         Optional<Article> articleOpt = articleRepository.findById(id);
+
+        if (articleOpt.isEmpty()) {
+            throw new RuntimeException("존재하지 않는 게시물입니다.");
+        }
 
         return articleOpt.get();
     }
@@ -27,12 +30,11 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
-    public void write(String title, String body) {
-        // 코드 정리 단축키 -> 컨트롤 + 알트 + L
-        Article article = Article.builder()
-                .title(title)
-                .body(body)
-                .build();
+    public void write(String title, String body, Member member) {
+        Article article = new Article();
+        article.setTitle(title);
+        article.setBody(body);
+        article.setMember(member);
 
         articleRepository.save(article);
     }
@@ -44,6 +46,11 @@ public class ArticleService {
 
     public void update(long id, String title, String body) {
         Optional<Article> articleOpt = articleRepository.findById(id);
+
+        if (articleOpt.isEmpty()) {
+            throw new RuntimeException("존재하지 않는 게시물입니다.");
+        }
+
         Article article = articleOpt.get();
 
         article.setTitle(title);

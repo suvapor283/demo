@@ -19,6 +19,6 @@ public class Comment {
     @Column(nullable = false)
     private String content;
 
-    @ManyToOne()
+    @ManyToOne
     private Article article;
 }

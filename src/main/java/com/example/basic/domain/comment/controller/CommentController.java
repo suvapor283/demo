@@ -1,5 +1,6 @@
 package com.example.basic.domain.comment.controller;
 
+import com.example.basic.domain.article.entity.Article;
 import com.example.basic.domain.comment.entity.Comment;
 import com.example.basic.domain.comment.service.CommentService;
 import jakarta.validation.Valid;
@@ -36,7 +37,7 @@ public class CommentController {
     @PostMapping("/comment/write")
     public String write(@Valid WriteForm writeForm) {
 
-        commentService.write(writeForm.comm);
+        commentService.write(writeForm.comm, writeForm.articleId);
         return "redirect:/article/detail/%d".formatted(writeForm.articleId);
     }
 

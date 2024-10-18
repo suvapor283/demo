@@ -40,20 +40,13 @@ public class AuthController {
     @PostMapping("/login")
     public String login(@Valid LoginForm loginForm, HttpServletResponse response, HttpSession session) {
 
-        Member member = memberService.loginCheck(loginForm.username);
+        Member targetMember = memberService.loginCheck(loginForm.username);
 
-        Member targetMember = null;
-
-        if (member != null && member.getPassword().equals(loginForm.password)) {
-            targetMember = member;
-        }
-
-        if (targetMember == null) {
+        if (targetMember == null || !targetMember.getPassword().equals(loginForm.password)) {
             return "login-fail";
         }
 
-        session.setAttribute("loginUser", loginForm.username);
-        session.setAttribute("role", targetMember.getRole());
+        session.setAttribute("loginUser", targetMember);
 
         return "redirect:/article/list";
     }
@@ -81,7 +74,7 @@ public class AuthController {
     }
 
     @PostMapping("/join")
-    public String join(Joinform joinform) {
+    public String join(Joinform joinform, Member member) {
         memberService.join(joinform.username, joinform.password, joinform.role);
 
         return "redirect:/article/list";

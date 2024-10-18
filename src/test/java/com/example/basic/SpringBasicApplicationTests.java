@@ -21,7 +21,7 @@ class SpringBasicApplicationTests {
     @DisplayName("회원 수정 - save")
     void test6() {
         // 수정할 대상 먼저 찾아오기
-        Optional<Member> memberOpt = memberRepository.findById("333");
+        Optional<Member> memberOpt = memberRepository.findById(1L);
         Member member = memberOpt.get();
 
         // 엔터티 값 변경
@@ -34,10 +34,10 @@ class SpringBasicApplicationTests {
     @DisplayName("회원 삭제 - delete, deleteById")
     void test5() {
         // 아이디로 삭제
-        memberRepository.deleteById("333");
+        memberRepository.deleteById(1L);
 
         // 엔터티로 삭제
-        Optional<Member> memberOpt = memberRepository.findById("333");
+        Optional<Member> memberOpt = memberRepository.findById(1L);
         Member member = memberOpt.get();
 
         memberRepository.delete(member);
@@ -46,7 +46,7 @@ class SpringBasicApplicationTests {
     @Test
     @DisplayName("회원 단건 조회 - findById")
     void test4() {
-        Optional<Member> memberOpt = memberRepository.findById("111");
+        Optional<Member> memberOpt = memberRepository.findById(1L);
 
         if(memberOpt.isPresent()) {
             Member member = memberOpt.get();
@@ -71,22 +71,19 @@ class SpringBasicApplicationTests {
     @DisplayName("회원 저장 - save")
     void test2() {
         Member member = Member.builder()
-                .username("111")
-                .password("111")
+                .username("333")
+                .password("333")
                 .role("admin")
                 .build();
 
         memberRepository.save(member);
-    }
 
-    @Test
-    void test() {
-        Member member = Member.builder()
-                .username("111")
-                .password("111")
-                .role("admin")
+        Member member2 = Member.builder()
+                .username("444")
+                .password("444")
+                .role("normal")
                 .build();
 
-//        memberDao.save(member);
+        memberRepository.save(member2);
     }
 }

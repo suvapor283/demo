@@ -16,11 +16,10 @@ public class MemberService {
 
     public void join(String username, String password, String role) {
         // 코드 정리 단축키 -> 컨트롤 + 알트 + L
-        Member member = Member.builder()
-                .username(username)
-                .password(password)
-                .role(role)
-                .build();
+        Member member = new Member();
+        member.setUsername(username);
+        member.setPassword(password);
+        member.setRole(role);
 
         memberRepository.save(member);
     }

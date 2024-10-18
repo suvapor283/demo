@@ -2,6 +2,7 @@ package com.example.basic.domain.article.controller;
 
 import com.example.basic.domain.article.entity.Article;
 import com.example.basic.domain.article.service.ArticleService;
+import com.example.basic.domain.auth.entity.Member;
 import com.example.basic.global.ReqResHandler;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,23 +26,16 @@ public class ArticleController {
     private final ReqResHandler reqResHandler;
 
     @RequestMapping("/article/detail/{id}")
-    public String detail(@PathVariable("id") long id, Model model, HttpServletRequest request) {
-        Cookie targetCookie = reqResHandler.getCookieByName(request, "loginUser");
+    public String detail(@PathVariable("id") long id, Model model) {
+        Article article = articleService.getById(id);
 
-        if (targetCookie != null) {
-            model.addAttribute("loginedUser", targetCookie.getValue());
-            Cookie role = reqResHandler.getCookieByName(request, "role");
-            model.addAttribute("role", role.getValue());
-        }
-
-        Article article = articleService.getById(id); // 데이터 처리(비지니스 로직)
-        model.addAttribute("article", article); // 웹 관련 처리
+        model.addAttribute("article", article);
 
         return "article/detail";
     }
 
     @RequestMapping("/article/list")
-    public String list(Model model, HttpServletRequest request, HttpSession session) {
+    public String list(Model model) {
         List<Article> articleList = articleService.getAll();
 
         model.addAttribute("articleList", articleList);
@@ -65,16 +59,16 @@ public class ArticleController {
     }
 
     @PostMapping("/article/write")
-    public String write(@Valid WriteForm writeForm, Model model) {
+    public String write(@Valid WriteForm writeForm, HttpSession session) {
+        articleService.write(writeForm.title, writeForm.body, (Member) session.getAttribute("loginUser"));
 
-        articleService.write(writeForm.title, writeForm.body);
         return "redirect:/article/list"; // redirect 뒤에 적는 것은 url을 적는 것. 템플릿 이름 아님. 주소창을 해당 url로 바꾸라는 의미
     }
 
     @RequestMapping("/article/delete/{id}")
     public String delete(@PathVariable long id) {
-
         articleService.deleteById(id);
+
         return "redirect:/article/list";
     }
 
@@ -90,6 +84,7 @@ public class ArticleController {
     @RequestMapping("/article/modify/{id}")
     public String modify(@PathVariable("id") long id, @Valid ModifyForm modifyForm) {
         articleService.update(id, modifyForm.getTitle(), modifyForm.getBody());
+
         return "redirect:/article/detail/%d".formatted(id); // 브라우저 출력 => html 문자열로 출력
     }
 }
