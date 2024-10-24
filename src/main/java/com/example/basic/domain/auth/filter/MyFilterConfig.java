@@ -25,12 +25,7 @@ public class MyFilterConfig {
     public FilterRegistrationBean<LoginFilter> LoginFilterRegistrationBean() {
         FilterRegistrationBean<LoginFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new LoginFilter(reqResHandler));
-        registrationBean.addUrlPatterns("/article/write");
-        registrationBean.addUrlPatterns("/article/modify/*");
-        registrationBean.addUrlPatterns("/article/delete/*");
-        registrationBean.addUrlPatterns("/comment/write");
-        registrationBean.addUrlPatterns("/comment/modify/*");
-        registrationBean.addUrlPatterns("/comment/delete/*");
+        registrationBean.addUrlPatterns("/*");
 
         return registrationBean;
     }

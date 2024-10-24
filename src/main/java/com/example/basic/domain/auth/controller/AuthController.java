@@ -2,8 +2,8 @@ package com.example.basic.domain.auth.controller;
 
 import com.example.basic.domain.article.entity.Article;
 import com.example.basic.domain.article.service.ArticleService;
-import com.example.basic.domain.auth.entity.Member;
-import com.example.basic.domain.auth.service.MemberService;
+import com.example.basic.domain.auth.service.AuthService;
+import com.example.basic.domain.member.entity.Member;
 import com.example.basic.domain.comment.entity.Comment;
 import com.example.basic.domain.comment.service.CommentService;
 import com.example.basic.global.reqres.ReqResHandler;
@@ -26,33 +26,31 @@ import java.util.List;
 public class AuthController {
 
     private final ReqResHandler reqResHandler;
-    private final MemberService memberService;
-    private final ArticleService articleService;
-    private final CommentService commentService;
+    private final AuthService authService;
 
-    // 회원가입
-    @GetMapping("/join")
-    public String memberjoin() {
-
-        return "join";
-    }
-
-    @Getter
-    @Setter
-    public static class Joinform {
-        @NotBlank
-        private String username;
-        @NotBlank
-        private String password;
-        private String role;
-    }
-
-    @PostMapping("/join")
-    public String join(@Valid Joinform joinform) {
-        memberService.join(joinform.username, joinform.password, joinform.role);
-
-        return "redirect:/article/list";
-    }
+//    // 회원가입
+//    @GetMapping("/join")
+//    public String join() {
+//
+//        return "join";
+//    }
+//
+//    @Getter
+//    @Setter
+//    public static class Joinform {
+//        @NotBlank
+//        private String username;
+//        @NotBlank
+//        private String password;
+//        private String role;
+//    }
+//
+//    @PostMapping("/join")
+//    public String join(@Valid Joinform joinform) {
+//        memberService.join(joinform.username, joinform.password, joinform.role);
+//
+//        return "redirect:/article/list";
+//    }
 
     // 로그인
     @GetMapping("/login")
@@ -73,11 +71,7 @@ public class AuthController {
     @PostMapping("/login")
     public String login(@Valid LoginForm loginForm) {
 
-        Member targetMember = memberService.loginCheck(loginForm.username);
-
-        if (targetMember == null || !targetMember.getPassword().equals(loginForm.password)) {
-            return "login-fail";
-        }
+        Member targetMember = authService.loginCheck(loginForm.username, loginForm.password);
 
         reqResHandler.setLoginMember(targetMember);
 
@@ -92,16 +86,16 @@ public class AuthController {
         return "redirect:/article/list";
     }
 
-    // 마이 페이지
-    @RequestMapping("/myPage")
-    public String myPage(Model model) {
-        Member loginMember = reqResHandler.getLoginMember();
-
-        List<Article> myArticleList = articleService.getByMemberId(loginMember.getId());
-        List<Comment> myCommentList = commentService.getByMemberId(loginMember.getId());
-        model.addAttribute("myArticleList", myArticleList);
-        model.addAttribute("myCommentList", myCommentList);
-
-        return "myPage";
-    }
+//    // 마이 페이지
+//    @RequestMapping("/myPage")
+//    public String myPage(Model model) {
+//        Member loginMember = reqResHandler.getLoginMember();
+//
+//        List<Article> myArticleList = articleService.getByMemberId(loginMember.getId());
+//        List<Comment> myCommentList = commentService.getByMemberId(loginMember.getId());
+//        model.addAttribute("myArticleList", myArticleList);
+//        model.addAttribute("myCommentList", myCommentList);
+//
+//        return "myPage";
+//    }
 }

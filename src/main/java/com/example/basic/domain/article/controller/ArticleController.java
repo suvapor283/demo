@@ -2,7 +2,7 @@ package com.example.basic.domain.article.controller;
 
 import com.example.basic.domain.article.entity.Article;
 import com.example.basic.domain.article.service.ArticleService;
-import com.example.basic.domain.auth.entity.Member;
+import com.example.basic.domain.member.entity.Member;
 import com.example.basic.global.reqres.ReqResHandler;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -49,7 +49,7 @@ public class ArticleController {
     }
 
     // 게시물 전체 조회
-    @RequestMapping("/list")
+    @GetMapping("/list")
     public String list(Model model) {
         List<Article> articleList = articleService.getAll();
 

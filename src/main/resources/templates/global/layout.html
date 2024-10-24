@@ -44,7 +44,7 @@
     </div>
     <div class="navbar-end">
         <div th:if="${session.loginMember}">
-            <a href="/myPage" th:text="${session.loginMember.username} + '님! 반갑습니다'"></a>
+            <a href="/member/info" th:text="${session.loginMember.username} + '님! 반갑습니다'"></a>
         </div>
         <button class="btn btn-ghost btn-circle">
             <svg
