@@ -1,0 +1,60 @@
+<html lang="ko" layout:decorate="~{global/layout}">
+<div layout:fragment="content">
+    <form method="post" onsubmit="checkSubmit(this); return false;" th:action="@{|/article/modify/${article.id}|}">
+        <div>
+            <label for="title">제목</label>
+            <input name="title" th:value="${article.title}" type="text">
+        </div>
+        <hr>
+        <div>
+            <label for="body">내용</label>
+            <input name="body" th:value="${article.body}" type="text">
+        </div>
+        <input type="submit" value="수정" class="btn btn-xs"/>
+    </form>
+    <form method="post" th:action="@{|/article/delete/${article.id}|}">
+        <input type="submit" value="삭제" class="btn btn-xs"/>
+    </form>
+    <hr>
+    <form action="/comment/write" method="post">
+        <input name="body" type="text" placeholder="댓글을 입력해주세요.">
+        <input name="articleId" th:value="${article.id}" type="hidden">
+        <input type="submit" value="댓글등록" class="btn btn-xs"/>
+    </form>
+    <hr>
+    <h5 th:text="|${#lists.size(article.commentList)}개의 답변이 있습니다.|"></h5>
+    <ul>
+        <li class="flex" th:each="comment : ${article.commentList}">
+            <form th:action="@{|/comment/modify/${comment.id}|}" method="post">
+                <input type="text" name="body" th:value="${comment.body}">
+                <input type="text" disabled th:value="${comment.author.username}">
+                <input type="hidden" name="articleId" th:value="${article.id}">
+                <input class="btn btn-xs" type="submit" value="수정">
+            </form>
+            <form th:action="@{|/comment/delete/${comment.id}|}" method="post">
+                <input type="hidden" name="articleId" th:value="${article.id}">
+                <input type="submit" class="btn btn-xs" value="삭제">
+            </form>
+        </li>
+    </ul>
+
+    <script>
+        function checkSubmit(form) {
+            console.log('test');
+            if (form.title.value.trim().length == 0) {
+                alert('제목을 입력해주세요.');
+                titleInput.focus();
+                return;
+            }
+
+            if (form.body.value.trim().length == 0) {
+                alert('내용을 입력해주세요.');
+                bodyInput.focus();
+                return;
+            }
+
+            form.submit();
+        }
+    </script>
+</div>
+</html>
